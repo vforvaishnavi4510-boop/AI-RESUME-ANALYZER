@@ -1,0 +1,565 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:#f5f7fb;
+  color:#1e293b;
+  min-height:100vh;
+  padding:40px 20px;
+}
+
+.hero-card{
+  background:white;
+
+  padding:40px;
+
+  border-radius:25px;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.08);
+
+  margin-bottom:40px;
+}
+.app-container{
+  max-width:900px;
+  margin:auto;
+}
+/* =======================
+   HEADER
+======================= */
+
+.heading{
+  text-align:center;
+  
+  
+}
+
+.heading h1{
+  font-size:3rem;
+  color:#2563eb;
+  font-weight:700;
+}
+
+.sub-heading{
+  text-align:center;
+  margin-top:20px;
+  margin-bottom:40px;
+  
+}
+
+.sub-heading p{
+  font-size:1.3rem;
+  color:#64748b;
+}
+
+.box{
+  width:120px;
+  height:5px;
+  background:#2563eb;
+  margin:20px auto;
+  border-radius:20px;
+}
+
+/* =======================
+   FILE INPUT
+======================= */
+
+.select-button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+}
+
+p{
+  text-align:center;
+}
+
+/* =======================
+   BUTTON
+======================= */
+
+button{
+  display:block;
+  margin:20px auto;
+  padding:14px 30px;
+
+  border:none;
+  border-radius:12px;
+
+  background:#2563eb;
+  color:white;
+
+  font-size:16px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+button:hover{
+  background:#1d4ed8;
+  transform:translateY(-3px);
+}
+
+button:disabled{
+  background:#94a3b8;
+  cursor:not-allowed;
+}
+
+/* =======================
+   ANALYSIS SECTION
+======================= */
+
+.analysis-container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.analysis-container h2{
+  text-align:center;
+}
+
+
+/* =======================
+   PROGRESS BAR
+======================= */
+
+.progress-bar{
+  width:100%;
+  height:18px;
+
+  background:#e2e8f0;
+
+  border-radius:50px;
+
+  overflow:hidden;
+
+  margin:20px 0;
+}
+
+.progress-fill{
+  height:100%;
+
+  background:
+  linear-gradient(
+    90deg,
+    #22c5aa,
+    #09a590
+  );
+
+  border-radius:50px;
+
+  transition:1s ease;
+}
+
+/* =======================
+   CARDS GRID
+======================= */
+
+.cards-container{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.strengths-card,
+.missing-card,
+.suggestion-card{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.strengths-card:hover,
+.missing-card:hover,
+.suggestion-card:hover{
+  transform:translateY(-5px);
+}
+
+.strengths-card h3,
+.missing-card h3,
+.suggestion-card h3{
+  margin-bottom:20px;
+  color:#2563eb;
+}
+
+/* Suggestions full width */
+
+.suggestion-card{
+  grid-column:span 2;
+}
+
+ul{
+  padding-left:20px;
+}
+
+li{
+  margin-bottom:12px;
+  line-height:1.6;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+@media(max-width:768px){
+
+  .heading h1{
+    font-size:2rem;
+  }
+
+  .sub-heading p{
+    font-size:1rem;
+  }
+
+  .cards-container{
+    grid-template-columns:1fr;
+  }
+
+  .suggestion-card{
+    grid-column:span 1;
+  }
+
+  .score-card{
+    padding:20px;
+  }
+}
+.job-input{
+  display:block;
+  width:450px;
+  max-width:90%;
+  margin:20px auto;
+
+  padding:15px 20px;
+
+  border:2px solid #2563eb;
+  border-radius:15px;
+
+  font-size:16px;
+
+  outline:none;
+  transition:0.3s;
+}
+
+.job-input:focus{
+  border-color:#1d4ed8;
+  box-shadow:0 0 15px rgba(37,99,235,0.2);
+}
+
+.job-match-card,
+.score-card{
+  width:100%;
+  max-width:900px;
+  color:black;
+  margin-left:auto;
+  margin-right:auto;
+
+  background:white;
+  padding:30px;
+  border-radius:20px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+  margin-bottom:20px;
+
+  text-align:center;
+}
+.upload-section{
+  width:100%;
+  display:flex;
+  justify-content:center;
+
+}
+
+.upload-box{
+  width:100%;
+  max-width:600px;
+  height:220px;
+
+  
+  border-radius:20px;
+
+  background:white;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  cursor:pointer;
+  transition:all .3s ease;
+}
+
+.upload-box.active,
+.job-description.active{
+  background:#eff6ff;
+  border-color:#1e40af;
+  box-shadow:0 0 20px rgba(37,99,235,.15);
+}
+.file-name{
+  text-align:center;
+  margin-top:15px;
+  color:#16a34a;
+  font-weight:600;
+}
+
+.job-match-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.job-match-header h3{
+  margin:0;
+}
+
+.job-match-header h1{
+  margin:0;
+  color:#2563eb;
+}
+
+.analysis-title{
+  text-align:center;
+  margin:20px 0;
+  color:#0f172a;
+  
+}.job-match-number{
+  font-size:3rem;
+  font-weight:700;
+  color:#010103;
+}
+
+.card-title{
+  display:flex;
+  margin-bottom:20px;
+  align-items:center;
+  gap:10px;
+  
+  color:#2563eb;
+}
+
+.card-title h3{
+  margin:0;
+  font-size:1.4rem;
+}
+
+.card-title svg{
+  font-size:1.4rem;
+}
+
+
+.strengths-card ul,
+.missing-card ul,
+.suggestion-card ul{
+  margin:0;
+  padding-left:22px;
+}
+
+.job-description{
+  width:100%;
+  max-width:700px;
+  min-height:180px;
+
+  padding:18px 20px;
+
+  border:2px solid #dbeafe;
+  border-radius:18px;
+
+  background:#ffffff;
+
+  font-size:15px;
+  font-family:'Segoe UI', sans-serif;
+  color:#1e293b;
+
+  resize:vertical;
+  outline:none;
+
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);
+
+  transition:all 0.3s ease;
+}
+
+
+
+
+.upload-box{
+  width:100%;
+  height:220px;
+}
+
+.job-label{
+  display:block;
+  margin-bottom:12px;
+
+  font-size:1rem;
+  font-weight:600;
+
+  color:#0f172a;
+}
+@media(max-width:768px){
+
+  .input-section{
+    grid-template-columns:1fr;
+  }
+
+}
+button{
+  width:250px;
+  height:55px;
+
+  font-size:18px;
+  font-weight:700;
+
+  border-radius:14px;
+
+  box-shadow:
+    0 10px 20px rgba(37,99,235,0.25);
+}
+
+
+.input-section{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  width:100%;
+  max-width:1000px;
+}
+
+/* BOTH CARDS */
+
+.job-description-container,
+.upload-section{
+  display:flex;
+  flex-direction:column;
+    height:320px; 
+}
+
+.job-label{
+    height:30px; 
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:12px;
+  color:#0f172a;
+}
+
+/* SAME HEIGHT FOR BOTH */
+
+.job-description,
+.upload-box{
+  height:250px;
+  width:100%;
+  border-radius:20px;
+  background:white;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    flex:1;    
+}
+
+/* JOB DESCRIPTION */
+
+.job-description{
+  border:2px solid #e2e8f0;
+  padding:20px;
+  resize:none;
+  outline:none;
+  font-size:15px;
+ transition:all .3s ease;
+}
+
+.job-description:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+/* UPLOAD BOX */
+
+.upload-box{
+  border:2px solid #e2e8f0;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  transition:.3s;
+}
+
+.upload-box:hover,
+.job-description:hover
+{
+  background:#f8fbff;
+  border-color:#1d4ed8;
+  transform:translateY(-3px);
+}
+
+
+.job-match-card,
+.score-card{
+  margin:0;
+  height:250px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+@media(max-width:768px){
+
+  .score-row{
+    grid-template-columns:1fr;
+  }
+
+}
+.score-row{
+  display:grid;
+   grid-template-columns: 1fr 1fr;
+  gap:25px;
+  margin-bottom:30px;
+}
+.job-match-card,
+.score-card{
+  height:220px;
+  margin:0;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  background:white;
+ border: 2px solid #2563eb;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+
+.strengths-card,
+.missing-card{
+    height: 380px;
+
+}
+
+.score-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.score-card h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+.score-card {
+  text-align: center;
+  color:black;
+}
+.heading{
+  font-size: 25px;
+  font-weight: bold;
+  color:#2563eb;
+}
