@@ -1,4 +1,4 @@
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+
 import express from "express";
 import cors from "cors";
 import multer from "multer";
