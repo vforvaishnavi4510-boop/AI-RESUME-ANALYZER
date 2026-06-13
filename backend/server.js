@@ -4,7 +4,7 @@ import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
-import pdf from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 
 const data = await pdf(req.file.buffer);
 
