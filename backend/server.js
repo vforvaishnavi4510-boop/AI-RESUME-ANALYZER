@@ -1,4 +1,3 @@
-import fs from "fs";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import express from "express";
 import cors from "cors";
@@ -18,10 +17,12 @@ const ai = new GoogleGenAI({
 
 const app = express();
 const upload = multer({
-  dest: "uploads/",
+  storage: multer.memoryStorage(),
 });
 
-app.use(cors());
+app.use(cors({
+  origin: "https://ai-resume-analyzer-frontend-tau.vercel.app"
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -40,7 +41,7 @@ app.post("/upload", upload.single("resume"), async (req, res) => {
 }
 
       console.log("Target Job:", jobDescription);
-    const pdf = await pdfjsLib.getDocument(req.file.path).promise;
+   const pdf = await pdfjsLib.getDocument({ data: req.file.buffer }).promise;
 
     let text = "";
 
@@ -90,13 +91,6 @@ in the most least content direct and to the point
 `;
 
 
-const getScoreColor = (score) => {
-  if(score >= 80) return "#22c55e";
-  if(score >= 60) return "#2563eb";
-  return "#ef4444";
-};
-
-
 
 const response = await ai.models.generateContent({
   model: "gemini-2.5-flash",
@@ -115,7 +109,7 @@ const analysis = JSON.parse(analysisText);
 
 
     console.log("Pages:", pdf.numPages);
-fs.unlinkSync(req.file.path);
+
    res.json({
   resumeText: text,
   analysis: analysis
@@ -131,8 +125,7 @@ fs.unlinkSync(req.file.path);
 }
   
 });
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+export default app;
