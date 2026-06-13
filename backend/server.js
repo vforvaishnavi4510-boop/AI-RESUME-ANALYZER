@@ -4,9 +4,20 @@ import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
+import pdf from "pdf-parse";
 
+const data = await pdf(req.file.buffer);
 
+const text = data.text;
 
+app.post("/upload", upload.single("resume"), async (req, res) => {
+
+  const pdfData = await pdf(req.file.buffer);
+
+  const text = pdfData.text;
+
+  // Gemini Analysis
+});
 
 dotenv.config();
 
