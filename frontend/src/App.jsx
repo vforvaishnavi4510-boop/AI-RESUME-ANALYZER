@@ -34,9 +34,9 @@ function App() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/upload",
-        formData,
-      );
+  `${import.meta.env.VITE_API_URL}/upload`,
+  formData,
+);
 
       setResumeText(response.data.resumeText);
       setAnalysis(response.data.analysis);
@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000")
+      .get(import.meta.env.VITE_API_URL)
       .then((response) => {
         setMessage(response.data.message);
       })
