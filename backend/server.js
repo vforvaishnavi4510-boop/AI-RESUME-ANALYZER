@@ -1,29 +1,13 @@
-
 import express from "express";
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
-import { PDFParse } from "pdf-parse";
-
-const data = await pdf(req.file.buffer);
-
-const text = data.text;
-
-app.post("/upload", upload.single("resume"), async (req, res) => {
-
-  const pdfData = await pdf(req.file.buffer);
-
-  const text = pdfData.text;
-
-  // Gemini Analysis
-});
 
 dotenv.config();
 
-
 const ai = new GoogleGenAI({
-  apiKey:process.env.GEMINI_API_KEY,
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 const app = express();
@@ -32,7 +16,10 @@ const upload = multer({
 });
 
 app.use(cors({
-  origin: "https://ai-resume-analyzer-frontend-tau.vercel.app"
+  origin: [
+    "http://localhost:5173",
+    "https://ai-resume-analyzer-frontend-tau.vercel.app"
+  ]
 }));
 app.use(express.json());
 
@@ -42,45 +29,45 @@ app.get("/", (req, res) => {
 
 app.post("/upload", upload.single("resume"), async (req, res) => {
   try {
-   
-      const jobDescription = req.body.jobDescription;
+    const jobDescription = req.body.jobDescription;
+    if (!req.file) {
+      return res.status(400).json({
+        error: "Please upload a PDF",
+      });
+    }
+    if (req.file.mimetype !== "application/pdf") {
+      return res.status(400).json({
+        error: "Only PDF files are allowed",
+      });
+    }
+    if (!jobDescription) {
+      return res.status(400).json({
+        error: "Please select a target job role",
+      });
+    }
 
-      if (!jobDescription) {
-  return res.status(400).json({
-    error: "Please select a target job role"
-  });
-}
+    console.log("Target Job:", jobDescription);
 
-      console.log("Target Job:", jobDescription);
-   const pdf = await pdfjsLib.getDocument({ data: req.file.buffer }).promise;
+    const pdfFile = {
+      inlineData: {
+        mimeType: "application/pdf",
+        data: req.file.buffer.toString("base64"),
+      },
+    };
 
-    let text = "";
-
-for(let i = 1; i <= pdf.numPages; i++) {
-  const page = await pdf.getPage(i);
-
-  const content = await page.getTextContent();
-
-  const pageText = content.items
-    .map(item => item.str)
-    .join(" ");
-
-  text += pageText + "\n";
-}
-
-
-  const prompt = `
+    const prompt = `
 You are an ATS Resume Analyzer.
 
 Target Job Role:
 ${jobDescription}
 
-Resume Content:
-${text}
 
-Analyze the resume specifically for the target job role.
+
+Analyze the attached PDF resume for the target job role.
+Read the PDF content yourself.
 
 Return ONLY valid JSON.
+
 
 {
   "score": 0,
@@ -102,39 +89,50 @@ in the most least content direct and to the point
 `;
 
 
+console.log("File:", req.file.originalname);
+console.log("Type:", req.file.mimetype);
+console.log("Size:", req.file.size);
 
-const response = await ai.models.generateContent({
-  model: "gemini-2.5-flash",
-  contents:prompt,
-})
-let analysisText = response.text;
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        pdfFile,
+        {
+          text: prompt,
+        },
+      ],
+    });
+    let analysisText = response.text;
 
-// remove markdown code fences
-analysisText = analysisText
-  .replace(/```json/g, "")
-  .replace(/```/g, "")
-  .trim();
+    // remove markdown code fences
+    analysisText = analysisText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-const analysis = JSON.parse(analysisText);
+    let analysis;
 
+try {
+  analysis = JSON.parse(analysisText);
+} catch (err) {
+  console.error("Gemini returned invalid JSON:");
+  console.log(analysisText);
 
-
-    console.log("Pages:", pdf.numPages);
-
-   res.json({
-  resumeText: text,
-  analysis: analysis
-});
-
-
-  } catch (error) {
-  console.error("ERROR:", error);
-
-  res.status(500).json({
-    error: error.message,
+  return res.status(500).json({
+    error: "Failed to parse Gemini response",
   });
 }
-  
+
+    res.json({
+      analysis: analysis,
+    });
+  } catch (error) {
+    console.error("ERROR:", error);
+
+    res.status(500).json({
+      error: error.message,
+    });
+  }
 });
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
